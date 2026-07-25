@@ -1,0 +1,20 @@
+# TEF Écriture
+
+Lightweight French writing trainer for TEF practice. It shares one React app across Electron desktop and an iPhone-ready Capacitor target.
+
+## Commands
+
+- `corepack pnpm install` installs dependencies.
+- `corepack pnpm dev` starts the Electron app.
+- `corepack pnpm web:dev` starts the mobile-friendly web app.
+- `corepack pnpm build` builds the Electron app.
+- `corepack pnpm ios:sync` builds and syncs the React app into iOS.
+- `corepack pnpm ios:open` opens the iOS project in Xcode.
+
+## TEF Focus
+
+- Section A: 25 minutes, 80-word minimum, article continuation prompts.
+- Section B: 35 minutes, 200-word minimum, opinion argument prompts.
+- Grammar checking is local and optional, designed for quick practice feedback.
+- Task screenshots can be imported as images. OCR runs only when importing, then the extracted text can be reviewed and added as a custom TEF exercise.
+- French OCR language data is packaged with the app. Tesseract's worker/core are loaded lazily on first image import to keep the normal app bundle small.

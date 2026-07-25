@@ -1,0 +1,14 @@
+.DS_Store
+node_modules/
+dist/
+out/
+coverage/
+public/ocr/
+ios/App/App/public/
+ios/App/App/capacitor.config.json
+ios/App/App/config.xml
+*.tsbuildinfo
+*.log
+.env
+.env.*
+!.env.example
