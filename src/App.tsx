@@ -2,8 +2,10 @@ import {
   Check,
   ChevronDown,
   ClipboardList,
+  Download,
   Eye,
   EyeOff,
+  FileText,
   ImagePlus,
   Loader2,
   Timer,
@@ -11,8 +13,10 @@ import {
 } from 'lucide-react';
 import { useMemo, useState, type ChangeEvent, type ReactElement } from 'react';
 
+import { loadAnswers, saveAnswers, type AnswersByExerciseId } from './answers';
 import { loadImportedExercises, saveImportedExercises } from './importedExercises';
 import { extractTextFromTaskImage, type OcrProgress } from './ocr';
+import { downloadAnswerPdf, type AnswerExportItem } from './pdfExport';
 import {
   analyzeFrenchWriting,
   createExerciseFromImageTask,
@@ -31,6 +35,7 @@ const sectionLabel = (exercise: TefExercise): string =>
 type OcrStatus = 'idle' | 'reading' | 'ready' | 'error';
 
 export const App = (): ReactElement | null => {
+  const [answers, setAnswers] = useState<AnswersByExerciseId>(loadAnswers);
   const [importedExercises, setImportedExercises] = useState<TefExercise[]>(loadImportedExercises);
   const [selectedExerciseId, setSelectedExerciseId] = useState(baseExercises[0]?.id ?? '');
   const [grammarEnabled, setGrammarEnabled] = useState(true);
@@ -40,7 +45,6 @@ export const App = (): ReactElement | null => {
   const [ocrProgress, setOcrProgress] = useState<OcrProgress>({ progress: 0, status: '' });
   const [ocrStatus, setOcrStatus] = useState<OcrStatus>('idle');
   const [ocrText, setOcrText] = useState('');
-  const [text, setText] = useState('');
 
   const exercises = useMemo(() => [...baseExercises, ...importedExercises], [importedExercises]);
 
@@ -48,6 +52,7 @@ export const App = (): ReactElement | null => {
     () => exercises.find((exercise) => exercise.id === selectedExerciseId) ?? exercises[0],
     [exercises, selectedExerciseId],
   );
+  const text = selectedExercise ? answers[selectedExercise.id] ?? '' : '';
 
   const stats = useMemo(() => getWritingStats(text), [text]);
   const hints = useMemo(
@@ -58,6 +63,17 @@ export const App = (): ReactElement | null => {
     ? Math.min(100, Math.round((stats.words / selectedExercise.minWords) * 100))
     : 0;
   const canAddImageTask = ocrStatus === 'ready' && ocrText.trim().length > 0;
+  const answeredExportItems = useMemo<AnswerExportItem[]>(() => {
+    return exercises
+      .filter((exercise) => answers[exercise.id]?.trim())
+      .sort((first, second) => first.section.localeCompare(second.section))
+      .map((exercise) => ({
+        answer: answers[exercise.id] ?? '',
+        exercise,
+      }));
+  }, [answers, exercises]);
+  const canExportCurrent = text.trim().length > 0;
+  const canExportAnsweredSections = answeredExportItems.length > 0;
 
   const handleTaskImageChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const file = event.target.files?.[0];
@@ -110,6 +126,44 @@ export const App = (): ReactElement | null => {
     setOcrText('');
     setOcrProgress({ progress: 0, status: '' });
     setOcrError('');
+  };
+
+  const handleAnswerChange = (nextText: string): void => {
+    if (!selectedExercise) {
+      return;
+    }
+
+    const nextAnswers = {
+      ...answers,
+      [selectedExercise.id]: nextText,
+    };
+
+    setAnswers(nextAnswers);
+    saveAnswers(nextAnswers);
+  };
+
+  const handleExportCurrentPdf = (): void => {
+    if (!selectedExercise || !canExportCurrent) {
+      return;
+    }
+
+    downloadAnswerPdf(
+      [
+        {
+          answer: text,
+          exercise: selectedExercise,
+        },
+      ],
+      selectedExercise.title,
+    );
+  };
+
+  const handleExportAnsweredPdf = (): void => {
+    if (!canExportAnsweredSections) {
+      return;
+    }
+
+    downloadAnswerPdf(answeredExportItems, 'TEF réponses Section A et B');
   };
 
   if (!selectedExercise) {
@@ -194,7 +248,7 @@ export const App = (): ReactElement | null => {
             spellCheck={grammarEnabled}
             value={text}
             onChange={(event) => {
-              setText(event.target.value);
+              handleAnswerChange(event.target.value);
             }}
           />
         </section>
@@ -289,6 +343,35 @@ export const App = (): ReactElement | null => {
               <dd>{stats.characters}</dd>
             </div>
           </dl>
+        </section>
+
+        <section className="export-panel">
+          <h2>Export PDF</h2>
+          <button
+            className="export-button"
+            disabled={!canExportCurrent}
+            type="button"
+            onClick={handleExportCurrentPdf}
+          >
+            <FileText size={17} aria-hidden="true" />
+            <span>Tâche actuelle</span>
+          </button>
+          <button
+            className="export-button secondary"
+            disabled={!canExportAnsweredSections}
+            type="button"
+            onClick={handleExportAnsweredPdf}
+          >
+            <Download size={17} aria-hidden="true" />
+            <span>Réponses A+B</span>
+          </button>
+          <p className="export-note">
+            {canExportAnsweredSections
+              ? `${String(answeredExportItems.length)} réponse${
+                  answeredExportItems.length === 1 ? '' : 's'
+                } prête${answeredExportItems.length === 1 ? '' : 's'} à exporter.`
+              : 'Rédigez une réponse pour activer l’export.'}
+          </p>
         </section>
 
         <section>

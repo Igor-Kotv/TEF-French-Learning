@@ -8,6 +8,8 @@ Lightweight French writing trainer for TEF practice. It shares one React app acr
 - `corepack pnpm dev` starts the Electron app.
 - `corepack pnpm web:dev` starts the mobile-friendly web app.
 - `corepack pnpm build` builds the Electron app.
+- `corepack pnpm package:mac` creates an unpacked macOS `.app` in `release/mac-arm64/`.
+- `corepack pnpm dist:mac` creates distributable macOS artifacts in `release/`.
 - `corepack pnpm ios:sync` builds and syncs the React app into iOS.
 - `corepack pnpm ios:open` opens the iOS project in Xcode.
 

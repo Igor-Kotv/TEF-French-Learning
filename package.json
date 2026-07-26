@@ -1,6 +1,8 @@
 {
   "name": "tef-french-learning",
   "version": "0.1.0",
+  "description": "Lightweight TEF French writing practice app.",
+  "author": "Ihor Kotvytskyi",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.15.4",
@@ -8,9 +10,11 @@
   "scripts": {
     "build": "tsc -b && electron-vite build",
     "dev": "node scripts/run-electron-vite.mjs dev",
+    "dist:mac": "pnpm build && electron-builder --mac",
     "ios:add": "cap add ios",
     "ios:open": "cap open ios",
     "ios:sync": "vite build && cap sync ios",
+    "package:mac": "pnpm build && electron-builder --mac --dir",
     "prepare:ocr": "node scripts/prepare-ocr-assets.mjs",
     "prebuild": "node scripts/prepare-ocr-assets.mjs",
     "predev": "node scripts/prepare-ocr-assets.mjs",
@@ -23,6 +27,30 @@
     "typecheck": "tsc -b && tsc --noEmit -p electron/tsconfig.json",
     "web:build": "vite build",
     "web:dev": "vite --host 0.0.0.0"
+  },
+  "build": {
+    "appId": "com.tef.frenchlearning",
+    "productName": "TEF French Learning",
+    "asar": true,
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.education",
+      "identity": null,
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "dmg": {
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    }
   },
   "dependencies": {
     "@capacitor/app": "^8.0.0",
@@ -42,10 +70,11 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "electron": "^33.3.1",
+    "electron-builder": "^26.15.3",
     "electron-vite": "^2.3.0",
     "jsdom": "^25.0.1",
     "typescript": "^5.7.3",
-    "vitest": "^2.1.8",
-    "vite": "^5.4.11"
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
   }
 }
