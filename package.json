@@ -32,6 +32,7 @@
     "appId": "com.tef.frenchlearning",
     "productName": "TEF French Learning",
     "asar": true,
+    "icon": "build/icon.png",
     "artifactName": "${productName}-${version}-${arch}.${ext}",
     "directories": {
       "output": "release"
@@ -42,6 +43,7 @@
     ],
     "mac": {
       "category": "public.app-category.education",
+      "icon": "build/icon.icns",
       "identity": null,
       "target": [
         "dmg",
