@@ -30,7 +30,7 @@ Pushing `main` publishes the website through `.github/workflows/deploy-pages.yml
 corepack pnpm web:publish
 ```
 
-If the workflow fails at "Configure GitHub Pages" with a Pages "Not Found" error, enable Pages once in GitHub under Settings -> Pages -> Source -> GitHub Actions. GitHub's default `GITHUB_TOKEN` cannot enable Pages for a repository that does not already have Pages configured.
+The workflow publishes the built `dist/` folder using GitHub's Pages artifact deployment action.
 
 ## TEF Focus
 
