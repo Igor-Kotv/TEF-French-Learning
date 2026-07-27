@@ -39,3 +39,7 @@ The workflow publishes the built `dist/` folder using GitHub's Pages artifact de
 - Grammar checking is local and optional, designed for quick practice feedback.
 - Task screenshots can be imported as images. OCR runs only when importing, then the extracted text can be reviewed and added as a custom TEF exercise.
 - French OCR language data is packaged with the app. Tesseract's worker/core are loaded lazily on first image import to keep the normal app bundle small.
+
+## License
+
+MIT

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Lightweight TEF French writing practice app.",
   "author": "Ihor Kotvytskyi",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.15.4",
