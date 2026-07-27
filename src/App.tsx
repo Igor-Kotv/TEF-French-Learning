@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useState, type ChangeEvent, type ReactElement } from 'react';
+import { useEffect, useMemo, useState, type ReactElement } from 'react';
 
 import { loadAnswers, saveAnswers, type AnswersByExerciseId } from './answers';
 import { ChecklistPanel } from './components/ChecklistPanel/ChecklistPanel';
 import { ExerciseSelector } from './components/ExerciseSelector/ExerciseSelector';
 import { ExportPanel } from './components/ExportPanel/ExportPanel';
 import { GrammarPanel } from './components/GrammarPanel/GrammarPanel';
-import { ImageImportPanel } from './components/ImageImportPanel/ImageImportPanel';
 import { ModePanel } from './components/ModePanel/ModePanel';
 import { PromptPanel } from './components/PromptPanel/PromptPanel';
 import { StatsPanel } from './components/StatsPanel/StatsPanel';
@@ -14,33 +13,22 @@ import { TopBar } from './components/TopBar/TopBar';
 import { WritingPanel } from './components/WritingPanel/WritingPanel';
 import { connectorGroups } from './connectors';
 import { loadImportedExercises, saveImportedExercises } from './importedExercises';
-import { extractTextFromTaskImage, type OcrProgress } from './ocr';
 import { downloadAnswerPdf, type AnswerExportItem } from './pdfExport';
 import { formatTimer, type PracticeMode } from './practiceMode';
 import {
   analyzeFrenchWriting,
-  createExerciseFromImageTask,
   getProgressLabel,
   getTefExercises,
   getWritingStats,
   type TefExercise,
-  type TefSection,
 } from './tefWriting';
 
 const baseExercises = getTefExercises();
-
-type OcrStatus = 'idle' | 'reading' | 'ready' | 'error';
 
 export const App = (): ReactElement | null => {
   const [answers, setAnswers] = useState<AnswersByExerciseId>(loadAnswers);
   const [importedExercises, setImportedExercises] = useState<TefExercise[]>(loadImportedExercises);
   const [selectedExerciseId, setSelectedExerciseId] = useState(baseExercises[0]?.id ?? '');
-  const [imageFileName, setImageFileName] = useState('');
-  const [imageSection, setImageSection] = useState<TefSection>('A');
-  const [ocrError, setOcrError] = useState('');
-  const [ocrProgress, setOcrProgress] = useState<OcrProgress>({ progress: 0, status: '' });
-  const [ocrStatus, setOcrStatus] = useState<OcrStatus>('idle');
-  const [ocrText, setOcrText] = useState('');
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('training');
   const [secondsRemaining, setSecondsRemaining] = useState(0);
 
@@ -64,7 +52,6 @@ export const App = (): ReactElement | null => {
     : 0;
   const timerProgress =
     testDurationSeconds > 0 ? Math.max(0, Math.round((secondsRemaining / testDurationSeconds) * 100)) : 0;
-  const canAddImageTask = ocrStatus === 'ready' && ocrText.trim().length > 0;
   const answeredExportItems = useMemo<AnswerExportItem[]>(() => {
     return exercises
       .filter((exercise) => answers[exercise.id]?.trim())
@@ -95,57 +82,12 @@ export const App = (): ReactElement | null => {
     };
   }, [isTestMode, secondsRemaining]);
 
-  const handleTaskImageChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
-
-    if (!file) {
-      return;
-    }
-
-    setImageFileName(file.name);
-    setOcrError('');
-    setOcrProgress({ progress: 0, status: 'starting' });
-    setOcrStatus('reading');
-    setOcrText('');
-
-    void extractTextFromTaskImage(file, setOcrProgress)
-      .then((extractedText) => {
-        if (extractedText.length === 0) {
-          setOcrError('Aucun texte détecté dans cette image.');
-          setOcrStatus('error');
-          return;
-        }
-
-        setOcrText(extractedText);
-        setOcrStatus('ready');
-      })
-      .catch((error: unknown) => {
-        setOcrError(error instanceof Error ? error.message : 'Impossible de lire cette image.');
-        setOcrStatus('error');
-      });
-  };
-
-  const handleAddImageTask = (): void => {
-    if (!canAddImageTask) {
-      return;
-    }
-
-    const importedExercise = createExerciseFromImageTask({
-      fileName: imageFileName,
-      section: imageSection,
-      text: ocrText,
-      timestamp: Date.now(),
-    });
+  const handleExerciseCreate = (importedExercise: TefExercise): void => {
     const nextImportedExercises = [importedExercise, ...importedExercises];
 
     setImportedExercises(nextImportedExercises);
     saveImportedExercises(nextImportedExercises);
     setSelectedExerciseId(importedExercise.id);
-    setOcrStatus('idle');
-    setOcrText('');
-    setOcrProgress({ progress: 0, status: '' });
-    setOcrError('');
   };
 
   const handleAnswerChange = (nextText: string): void => {
@@ -190,6 +132,7 @@ export const App = (): ReactElement | null => {
           exercises={exercises}
           selectedExerciseId={selectedExercise.id}
           onExerciseChange={setSelectedExerciseId}
+          onExerciseCreate={handleExerciseCreate}
         />
         <PromptPanel exercise={selectedExercise} />
         <WritingPanel
@@ -211,18 +154,6 @@ export const App = (): ReactElement | null => {
           timerProgress={timerProgress}
         />
         {!isTestMode ? <TipsPanel groups={connectorGroups} /> : null}
-        <ImageImportPanel
-          canAddImageTask={canAddImageTask}
-          error={ocrError}
-          ocrText={ocrText}
-          progress={ocrProgress}
-          section={imageSection}
-          status={ocrStatus}
-          onAddTask={handleAddImageTask}
-          onImageChange={handleTaskImageChange}
-          onOcrTextChange={setOcrText}
-          onSectionChange={setImageSection}
-        />
         <StatsPanel exercise={selectedExercise} stats={stats} />
         <ExportPanel
           answeredCount={answeredExportItems.length}

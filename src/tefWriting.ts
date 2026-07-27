@@ -34,6 +34,14 @@ export interface ImageTaskInput {
   timestamp: number;
 }
 
+export interface ManualTaskInput {
+  prompt: string;
+  section: TefSection;
+  task: string;
+  timestamp: number;
+  title: string;
+}
+
 const wordPattern = /[\p{L}\p{M}\p{N}]+(?:[’'-][\p{L}\p{M}\p{N}]+)*/gu;
 
 const tefExercises: TefExercise[] = [
@@ -158,6 +166,29 @@ export const createExerciseFromImageTask = ({
     title: getImageTaskTitle(fileName, section),
     prompt: cleanTaskText(text),
     task: getDefaultTask(section),
+    minWords,
+    durationMinutes: section === 'A' ? 25 : 35,
+    checklist: getDefaultChecklist(section),
+  };
+};
+
+export const createExerciseFromManualTask = ({
+  prompt,
+  section,
+  task,
+  timestamp,
+  title,
+}: ManualTaskInput): TefExercise => {
+  const minWords = section === 'A' ? 80 : 200;
+  const cleanTitle = title.trim();
+  const defaultTitle = section === 'A' ? 'Section A · Nouvelle tâche' : 'Section B · Nouvelle tâche';
+
+  return {
+    id: `manual-${String(timestamp)}`,
+    section,
+    title: cleanTitle.length > 0 ? cleanTitle : defaultTitle,
+    prompt: cleanTaskText(prompt),
+    task: cleanTaskText(task),
     minWords,
     durationMinutes: section === 'A' ? 25 : 35,
     checklist: getDefaultChecklist(section),

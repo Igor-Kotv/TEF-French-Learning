@@ -13,6 +13,27 @@
   font-weight: 750;
 }
 
+.exercise-selector__controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 8px;
+}
+
+.exercise-selector__add-button {
+  display: inline-grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid #cbd8d2;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #2d7d64;
+
+  &:hover {
+    background: #246d56;
+  }
+}
+
 .select-wrap {
   position: relative;
 
