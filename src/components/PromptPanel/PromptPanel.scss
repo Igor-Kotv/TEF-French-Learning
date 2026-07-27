@@ -1,0 +1,35 @@
+.prompt-panel {
+  border: 1px solid #d8e1dd;
+  border-radius: 8px;
+  padding: 18px;
+  background: #ffffff;
+}
+
+.prompt-panel__heading {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #587065;
+  font-size: 0.84rem;
+  font-weight: 800;
+
+  span:last-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.prompt-panel__prompt {
+  color: #24322d;
+  font-size: 1.04rem;
+}
+
+.prompt-panel__task {
+  margin-bottom: 0;
+  color: #5a4032;
+  font-weight: 700;
+}

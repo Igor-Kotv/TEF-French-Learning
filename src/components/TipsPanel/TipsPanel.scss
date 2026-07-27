@@ -1,0 +1,44 @@
+.tips-panel {
+  border: 1px solid #d8e1dd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.tips-panel__groups {
+  display: grid;
+  gap: 12px;
+}
+
+.tips-panel__group {
+  display: grid;
+  gap: 6px;
+
+  h3 {
+    margin: 0;
+    color: #43584f;
+    font-size: 0.78rem;
+    font-weight: 850;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    border: 1px solid #d8e1dd;
+    border-radius: 999px;
+    padding: 4px 8px;
+    color: #24322d;
+    background: #f6f8f7;
+    font-size: 0.84rem;
+    font-weight: 720;
+  }
+}

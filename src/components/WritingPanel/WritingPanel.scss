@@ -1,0 +1,99 @@
+.writing-panel {
+  display: flex;
+  flex: 1;
+  min-height: 420px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d8e1dd;
+  border-radius: 8px;
+  background: #ffffff;
+
+  > textarea {
+    width: 100%;
+    min-height: 340px;
+    flex: 1;
+    resize: none;
+    border: 0;
+    padding: 18px;
+    color: #172026;
+    background: #ffffff;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    outline: none;
+
+    &::placeholder {
+      color: #8b9c94;
+    }
+  }
+}
+
+.writing-panel__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid #e5ebe8;
+  padding: 12px 14px;
+}
+
+.writing-panel__metric,
+.writing-panel__target,
+.writing-panel__timer {
+  display: inline-flex;
+  align-items: center;
+}
+
+.writing-panel__metric {
+  gap: 7px;
+
+  strong {
+    font-size: 1.25rem;
+  }
+
+  span {
+    color: #587065;
+    font-weight: 750;
+  }
+}
+
+.writing-panel__target {
+  flex: 1;
+  justify-content: flex-end;
+  gap: 10px;
+  color: #43584f;
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.writing-panel__timer {
+  min-height: 34px;
+  flex: 0 0 auto;
+  gap: 6px;
+  border: 1px solid #d5b9ad;
+  border-radius: 999px;
+  padding: 0 10px;
+  color: #7b3827;
+  background: #fff7f3;
+  font-weight: 850;
+}
+
+@media (max-width: 820px) {
+  .writing-panel {
+    min-height: 460px;
+  }
+}
+
+@media (max-width: 520px) {
+  .writing-panel__toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .writing-panel__target {
+    justify-content: flex-start;
+
+    .progress-bar {
+      width: 100%;
+    }
+  }
+}

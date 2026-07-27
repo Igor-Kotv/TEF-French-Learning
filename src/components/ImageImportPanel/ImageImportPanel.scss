@@ -1,0 +1,127 @@
+.image-import-panel {
+  border: 1px solid #d8e1dd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.image-import-panel__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 126px;
+  gap: 8px;
+}
+
+.image-import-panel__file-button {
+  position: relative;
+  display: inline-flex;
+  min-height: 40px;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  border: 1px solid #cbd8d2;
+  border-radius: 8px;
+  padding: 0 12px;
+  color: #173226;
+  background: #ffffff;
+  font-weight: 780;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:has(input:disabled) {
+    color: #7c8c84;
+    background: #f6f8f7;
+    cursor: progress;
+  }
+}
+
+.image-import-panel__spin {
+  animation: image-import-spin 0.9s linear infinite;
+}
+
+@keyframes image-import-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.image-import-panel__section-select {
+  position: relative;
+
+  select {
+    width: 100%;
+    min-height: 40px;
+    appearance: none;
+    border: 1px solid #cbd8d2;
+    border-radius: 8px;
+    padding: 0 34px 0 12px;
+    color: #172026;
+    background: #ffffff;
+  }
+
+  svg {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+}
+
+.image-import-panel__progress {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  color: #60736b;
+  font-size: 0.86rem;
+  font-weight: 760;
+
+  .progress-bar {
+    width: 100%;
+  }
+}
+
+.image-import-panel__preview {
+  width: 100%;
+  min-height: 116px;
+  resize: vertical;
+  border: 1px solid #d8e1dd;
+  border-radius: 8px;
+  margin-top: 12px;
+  padding: 10px;
+  color: #172026;
+  background: #ffffff;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.image-import-panel__add-button {
+  width: 100%;
+  min-height: 40px;
+  border: 0;
+  border-radius: 8px;
+  margin-top: 10px;
+  color: #ffffff;
+  background: #2d7d64;
+  font-weight: 820;
+
+  &:disabled {
+    color: #6f8078;
+    background: #dce6e1;
+    cursor: not-allowed;
+  }
+}
+
+.image-import-panel__error {
+  margin: 10px 0 0;
+  color: #9a4631;
+  font-size: 0.9rem;
+  font-weight: 720;
+}

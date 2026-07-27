@@ -1,0 +1,33 @@
+.mode-panel {
+  border: 1px solid #d8e1dd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+
+  .progress-bar {
+    width: 100%;
+  }
+}
+
+.mode-panel--test {
+  border-color: #d5b9ad;
+  background: #fffaf7;
+}
+
+.mode-panel__timer {
+  margin-bottom: 10px;
+  color: #7b3827;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.mode-panel__note {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px 0 0;
+  color: #60736b;
+  font-size: 0.9rem;
+  font-weight: 740;
+}

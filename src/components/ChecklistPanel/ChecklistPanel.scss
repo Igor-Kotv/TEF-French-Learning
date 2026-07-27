@@ -1,0 +1,26 @@
+.checklist-panel {
+  border: 1px solid #d8e1dd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.checklist-panel__list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 8px;
+    color: #30433b;
+  }
+
+  svg {
+    margin-top: 3px;
+    color: #2d7d64;
+  }
+}

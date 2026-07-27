@@ -1,0 +1,41 @@
+.grammar-panel {
+  border: 1px solid #d8e1dd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.grammar-panel__hints {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    gap: 3px;
+    border-left: 3px solid #7c9a8b;
+    padding: 9px 10px;
+    background: #f6f8f7;
+
+    &.warning {
+      border-left-color: #b05b40;
+    }
+  }
+
+  strong {
+    font-size: 0.9rem;
+  }
+
+  span {
+    color: #60736b;
+    font-size: 0.9rem;
+  }
+}
+
+.grammar-panel__empty {
+  margin: 0;
+  color: #60736b;
+  font-size: 0.9rem;
+}
