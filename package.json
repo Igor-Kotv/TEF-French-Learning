@@ -27,7 +27,7 @@
     "preview": "node scripts/run-electron-vite.mjs preview",
     "test": "vitest run",
     "typecheck": "tsc -b && tsc --noEmit -p electron/tsconfig.json",
-    "web:build": "vite build --base=/TEF-French-Learning/",
+    "web:build": "vite build --base=/",
     "web:dev": "vite --host 0.0.0.0",
     "web:preview": "vite preview --host 0.0.0.0",
     "web:publish": "git push origin main"
