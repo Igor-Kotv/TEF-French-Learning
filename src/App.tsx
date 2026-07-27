@@ -63,6 +63,9 @@ export const App = (): ReactElement | null => {
   }, [answers, exercises]);
   const canExportCurrent = text.trim().length > 0;
   const canExportAnsweredSections = answeredExportItems.length > 0;
+  const selectedExerciseIsCustom = selectedExercise
+    ? importedExercises.some((exercise) => exercise.id === selectedExercise.id)
+    : false;
 
   useEffect(() => {
     setSecondsRemaining(testDurationSeconds);
@@ -88,6 +91,17 @@ export const App = (): ReactElement | null => {
     setImportedExercises(nextImportedExercises);
     saveImportedExercises(nextImportedExercises);
     setSelectedExerciseId(importedExercise.id);
+  };
+
+  const handleExerciseDelete = (exerciseId: string): void => {
+    const nextImportedExercises = importedExercises.filter((exercise) => exercise.id !== exerciseId);
+    const { [exerciseId]: _deletedAnswer, ...nextAnswers } = answers;
+
+    setImportedExercises(nextImportedExercises);
+    saveImportedExercises(nextImportedExercises);
+    setAnswers(nextAnswers);
+    saveAnswers(nextAnswers);
+    setSelectedExerciseId(baseExercises[0]?.id ?? nextImportedExercises[0]?.id ?? '');
   };
 
   const handleAnswerChange = (nextText: string): void => {
@@ -131,8 +145,10 @@ export const App = (): ReactElement | null => {
         <ExerciseSelector
           exercises={exercises}
           selectedExerciseId={selectedExercise.id}
+          selectedExerciseIsCustom={selectedExerciseIsCustom}
           onExerciseChange={setSelectedExerciseId}
           onExerciseCreate={handleExerciseCreate}
+          onExerciseDelete={handleExerciseDelete}
         />
         <PromptPanel exercise={selectedExercise} />
         <WritingPanel

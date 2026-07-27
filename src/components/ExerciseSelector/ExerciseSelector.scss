@@ -17,20 +17,38 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 44px;
   gap: 8px;
+
+  &--with-delete {
+    grid-template-columns: minmax(0, 1fr) 44px 44px;
+  }
 }
 
-.exercise-selector__add-button {
+.exercise-selector__add-button,
+.exercise-selector__delete-button {
   display: inline-grid;
   width: 44px;
   height: 44px;
   place-items: center;
   border: 1px solid #cbd8d2;
   border-radius: 8px;
+}
+
+.exercise-selector__add-button {
   color: #ffffff;
   background: #2d7d64;
 
   &:hover {
     background: #246d56;
+  }
+}
+
+.exercise-selector__delete-button {
+  color: #9a4631;
+  background: #fff7f4;
+
+  &:hover {
+    border-color: #d59b8a;
+    background: #ffe9e1;
   }
 }
 
