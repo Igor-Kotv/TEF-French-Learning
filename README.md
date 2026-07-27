@@ -18,7 +18,7 @@ Lightweight French writing trainer for TEF practice. It shares one React app acr
 
 ## Website
 
-The website build uses the same React app as Electron and iOS, but it is built for the custom domain root:
+The website build uses the same React app as Electron and iOS, but it is built with a GitHub Pages base path:
 
 ```sh
 corepack pnpm web:build
@@ -31,8 +31,6 @@ corepack pnpm web:publish
 ```
 
 The workflow publishes the built `dist/` folder using GitHub's Pages artifact deployment action.
-
-The production domain is `https://frenchwrite.app/`. Configure DNS for the apex domain with GitHub Pages `A` records, and point `www` to `Igor-Kotv.github.io`.
 
 ## TEF Focus
 
