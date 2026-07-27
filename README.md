@@ -7,11 +7,28 @@ Lightweight French writing trainer for TEF practice. It shares one React app acr
 - `corepack pnpm install` installs dependencies.
 - `corepack pnpm dev` starts the Electron app.
 - `corepack pnpm web:dev` starts the mobile-friendly web app.
+- `corepack pnpm web:build` builds the GitHub Pages website version into `dist/`.
+- `corepack pnpm web:preview` previews the built website locally.
+- `corepack pnpm web:publish` pushes `main` to trigger the GitHub Pages deployment workflow.
 - `corepack pnpm build` builds the Electron app.
 - `corepack pnpm package:mac` creates an unpacked macOS `.app` in `release/mac-arm64/`.
 - `corepack pnpm dist:mac` creates distributable macOS artifacts in `release/`.
 - `corepack pnpm ios:sync` builds and syncs the React app into iOS.
 - `corepack pnpm ios:open` opens the iOS project in Xcode.
+
+## Website
+
+The website build uses the same React app as Electron and iOS, but it is built with a GitHub Pages base path:
+
+```sh
+corepack pnpm web:build
+```
+
+Pushing `main` publishes the website through `.github/workflows/deploy-pages.yml`. You can use the publish command after committing changes:
+
+```sh
+corepack pnpm web:publish
+```
 
 ## TEF Focus
 

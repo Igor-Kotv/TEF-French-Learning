@@ -22,11 +22,14 @@
     "prepreview": "node scripts/prepare-ocr-assets.mjs",
     "preweb:build": "node scripts/prepare-ocr-assets.mjs",
     "preweb:dev": "node scripts/prepare-ocr-assets.mjs",
+    "preweb:preview": "node scripts/prepare-ocr-assets.mjs",
     "preview": "node scripts/run-electron-vite.mjs preview",
     "test": "vitest run",
     "typecheck": "tsc -b && tsc --noEmit -p electron/tsconfig.json",
-    "web:build": "vite build",
-    "web:dev": "vite --host 0.0.0.0"
+    "web:build": "vite build --base=/TEF-French-Learning/",
+    "web:dev": "vite --host 0.0.0.0",
+    "web:preview": "vite preview --host 0.0.0.0",
+    "web:publish": "git push origin main"
   },
   "build": {
     "appId": "com.tef.frenchlearning",
